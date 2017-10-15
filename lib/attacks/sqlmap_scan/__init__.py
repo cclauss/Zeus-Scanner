@@ -1,10 +1,15 @@
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import range
+from builtins import object
 import json
 import time
 import re
 import subprocess
 
 try:
-    import urllib2  # python 2
+    import urllib.request, urllib.error, urllib.parse  # python 2
 except ImportError:
     import urllib as urllib2  # python 3
 
@@ -73,8 +78,8 @@ class SqlmapHook(object):
             for i in range(0, len(opts)):
                 data_dict[opts[i][0]] = opts[i][1]
         post_data = json.dumps(data_dict)
-        req = urllib2.Request(start_scan_url, data=post_data, headers=self.headers)
-        return urllib2.urlopen(req)
+        req = urllib.request.Request(start_scan_url, data=post_data, headers=self.headers)
+        return urllib.request.urlopen(req)
 
     def show_sqlmap_log(self, api_id):
         """

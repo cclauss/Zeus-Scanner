@@ -1,3 +1,4 @@
+from builtins import str
 import json
 import socket
 import re
@@ -128,7 +129,7 @@ def main_intel_amt(url, agent=None, proxy=None, **kwargs):
             pass
         else:
             print("-" * 40)
-            for key in json_data.keys():
+            for key in list(json_data.keys()):
                 print("{}:".format(str(key).capitalize()))
                 for item in json_data[key]:
                     print(" - {}: {}".format(item.capitalize(), json_data[key][item]))

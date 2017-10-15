@@ -1,8 +1,12 @@
+from future import standard_library
+standard_library.install_aliases()
+from builtins import input
+from builtins import str
 import os
 import platform
 import subprocess
 import tarfile
-import ConfigParser
+import configparser
 
 import whichcraft
 
@@ -10,7 +14,7 @@ import lib.core.settings
 
 
 def disclaimer():
-    question = raw_input(
+    question = input(
         "\033[91mAttacking targets without consent is not only illegal, but it "
         "is unethical and frowned upon in most countries. By installing this "
         "program you are agreeing that you are responsible for your own actions, "
@@ -36,7 +40,7 @@ def find_tools(to_search=("sqlmap", "nmap"), directory="{}/bin/paths", filename=
         filename
     )
     cfgfile = open(full_path, "a+")
-    parser = ConfigParser.ConfigParser()
+    parser = configparser.ConfigParser()
     path_schema = {}
     for item in to_search:
         path_obj = whichcraft.which(item)
@@ -44,13 +48,13 @@ def find_tools(to_search=("sqlmap", "nmap"), directory="{}/bin/paths", filename=
             path_schema[item] = path_obj
         else:
             path_schema[item] = None
-    for key, value in path_schema.iteritems():
+    for key, value in path_schema.items():
         if value is None:
             provided_path = lib.core.settings.prompt(
                 "what is the full path to {} on your system".format(key)
             )
             path_schema[key] = provided_path
-    for program, path in path_schema.iteritems():
+    for program, path in path_schema.items():
         parser.add_section(program)
         parser.set(program, "path", path)
     parser.write(cfgfile)

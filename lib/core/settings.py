@@ -1,3 +1,8 @@
+from future import standard_library
+standard_library.install_aliases()
+from builtins import input
+from builtins import map
+from builtins import str
 import os
 import io
 import re
@@ -8,7 +13,7 @@ import difflib
 import logging
 import random
 import subprocess
-import ConfigParser
+import configparser
 
 import psutil
 
@@ -299,14 +304,14 @@ def prompt(question, opts=None):
     """
     if opts is not None:
         options = '/'.join(opts)
-        return raw_input(
+        return input(
             "[{} {}] {}[{}]: ".format(
                 time.strftime("%H:%M:%S"),
                 "PROMPT", question, options
             )
         )
     else:
-        return raw_input(
+        return input(
             "[{} {}] {} ".format(
                 time.strftime("%H:%M:%S"), "PROMPT", question
             )
@@ -317,7 +322,7 @@ def find_application(application, opt="path", verbose=False):
     retval = []
     with open(TOOL_PATHS) as config:
         read_conf = config.read()
-    conf_parser = ConfigParser.RawConfigParser(allow_no_value=True)
+    conf_parser = configparser.RawConfigParser(allow_no_value=True)
     conf_parser.readfp(io.BytesIO(read_conf))
     for section in conf_parser.sections():
         if str(section).lower() == str(application).lower():
@@ -415,7 +420,7 @@ def get_browser_version():
         ))
         return "failed to start"
     try:
-        major, minor = map(int, re.search(r"(\d+).(\d+)", output).groups())
+        major, minor = list(map(int, re.search(r"(\d+).(\d+)", output).groups()))
     except Exception:
         logger.error(set_color(
             "failed to parse '{}' for version number...".format(output), level=50

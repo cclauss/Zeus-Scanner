@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import range
 import optparse
 import os
 import random
@@ -9,7 +13,7 @@ import time
 try:
     import http.client as http_client  # Python 3
 except ImportError:
-    import httplib as http_client  # Python 2
+    import http.client as http_client  # Python 2
 from selenium.webdriver.remote.errorhandler import WebDriverException
 
 from var import blackwidow
@@ -225,7 +229,7 @@ if __name__ == "__main__":
         display the running options if verbose is used
         """
         opts_being_used = []
-        for o, v in opt.__dict__.items():
+        for o, v in list(opt.__dict__.items()):
             if v is not None:
                 opts_being_used.append((o, v))
         return dict(opts_being_used)
@@ -400,7 +404,7 @@ if __name__ == "__main__":
         }
 
         enabled = set()
-        for key in __enabled_attacks.keys():
+        for key in list(__enabled_attacks.keys()):
             if __enabled_attacks[key] is True:
                 enabled.add(key)
             if len(enabled) > 1:

@@ -1,7 +1,11 @@
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import range
 import os
 import sys
 try:
-    import urllib2  # python 2
+    import urllib.request, urllib.error, urllib.parse  # python 2
 except ImportError:
     import urllib.request as urllib2  # python 3
 import json
@@ -99,11 +103,11 @@ def request_issue_creation():
         _json_data = _json_data.encode("utf-8")
 
     try:
-        req = urllib2.Request(
+        req = urllib.request.Request(
             url="https://api.github.com/repos/ekultek/zeus-scanner/issues", data=_json_data,
             headers={"Authorization": "token {}".format(token)}
         )
-        urllib2.urlopen(req, timeout=10).read()
+        urllib.request.urlopen(req, timeout=10).read()
         lib.core.settings.logger.info(lib.core.settings.set_color(
             "issue has been created successfully with the following name '{}'...".format(issue_title)
         ))

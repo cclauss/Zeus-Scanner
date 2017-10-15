@@ -1,7 +1,9 @@
+from future import standard_library
+standard_library.install_aliases()
 import os
 import re
 try:
-    import urlparse  # python 2
+    import urllib.parse  # python 2
 except ImportError:
     import urllib.parse as urlparse  # python 3
 import tempfile
@@ -71,7 +73,7 @@ def create_urls(url, payload_list, tamper=None):
 
 
 def find_xss_script(url, **kwargs):
-    data = urlparse.urlparse(url)
+    data = urllib.parse.urlparse(url)
     payload_parser = {"path": 2, "query": 4, "fragment": 5}
     if data[payload_parser["fragment"]] is not "" or None:
         retval = "{}{}".format(
@@ -93,7 +95,7 @@ def scan_xss(url, agent=None, proxy=None):
     xss_request = requests.get(url, proxies=config_proxy, headers=config_headers)
     html_data = xss_request.content
     query = find_xss_script(url)
-    for db in DBMS_ERRORS.keys():
+    for db in list(DBMS_ERRORS.keys()):
         for item in DBMS_ERRORS[db]:
             if re.findall(item, html_data):
                 return "sqli", db

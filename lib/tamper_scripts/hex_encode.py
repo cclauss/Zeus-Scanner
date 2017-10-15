@@ -1,3 +1,5 @@
+from builtins import str
+from builtins import hex
 from lib.core.settings import (
     logger,
     set_color

@@ -1,6 +1,7 @@
 # coding=utf-8
 
 
+from builtins import str
 def tamper(payload, safe="%&=-_", **kwargs):
     encodings = {
         " ": "%20", "!": "%21", '"': "%22", "#": "%23", "$": "%24", "%": "%25", "&": "%26", "'": "%27",
@@ -32,7 +33,7 @@ def tamper(payload, safe="%&=-_", **kwargs):
         "ø": "%F8", "ù": "%F9", "ú": "%FA", "û": "%FB", "ü": "%FC", "ý": "%FD", "þ": "%FE", "ÿ": "%FF"
     }
     retval = ""
-    if isinstance(payload, unicode):
+    if isinstance(payload, str):
         payload = str(payload)
     for char in payload:
         if char not in safe:

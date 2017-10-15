@@ -1,3 +1,5 @@
+from builtins import next
+from builtins import str
 import os
 import re
 import time
@@ -40,9 +42,9 @@ from lib.core.settings import (
 )
 
 try:
-    unicode
+    str
 except NameError:
-    unicode = str
+    str = str
 
 
 def bypass_ip_block(url):
@@ -107,7 +109,7 @@ def get_urls(query, url, verbose=False, warning=True, **kwargs):
             "adjusting selenium-webdriver user-agent to '{}'...".format(user_agent), level=10
         ))
     if proxy is not None:
-        proxy_type = proxy.keys()
+        proxy_type = list(proxy.keys())
         proxy_to_use = Proxy({
             "proxyType": ProxyType.MANUAL,
             "httpProxy": proxy[proxy_type[0]],
@@ -118,7 +120,7 @@ def get_urls(query, url, verbose=False, warning=True, **kwargs):
         if verbose:
             logger.debug(set_color(
                 "setting selenium proxy to '{}'...".format(
-                    ''.join(proxy_type) + "://" + ''.join(proxy.values())
+                    ''.join(proxy_type) + "://" + ''.join(list(proxy.values()))
                 ), level=10
             ))
     else:
@@ -227,7 +229,7 @@ def parse_search_results(
     proxy_string_info = "setting proxy to {}..."
     if proxy_string is not None:
         proxy_string_info = proxy_string_info.format(
-            ''.join(proxy_string.keys()) + "://" + ''.join(proxy_string.values()))
+            ''.join(list(proxy_string.keys())) + "://" + ''.join(list(proxy_string.values())))
     else:
         proxy_string_info = "no proxy configuration detected..."
 
@@ -276,7 +278,7 @@ def parse_search_results(
             url = unquote(url)
             if not any(u in url for u in url_skip_schema):
                 if URL_QUERY_REGEX.match(url) and not any(l in url for l in URL_EXCLUDES):
-                    if isinstance(url, unicode):
+                    if isinstance(url, str):
                         url = str(url).encode("utf-8")
                     if "webcache" in url:
                         logger.info(set_color(
@@ -331,8 +333,8 @@ def search_multiple_pages(query, link_amount, verbose=False, **kwargs):
         proxy_dict = proxy_string_to_dict(proxy_string)
         proxy_config = httplib2.ProxyInfo(
             proxy_type=proxy_type_schema[proxy_type],
-            proxy_host="".join(proxy_dict.keys()),
-            proxy_port="".join(proxy_dict.values())
+            proxy_host="".join(list(proxy_dict.keys())),
+            proxy_port="".join(list(proxy_dict.values()))
         )
         return proxy_config
 

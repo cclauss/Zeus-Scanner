@@ -1,3 +1,7 @@
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import range
 import os
 import multiprocessing
 
@@ -5,7 +9,8 @@ try:                 # Python 2
     from urllib.request import urlopen
     from urllib.error import HTTPError
 except ImportError:  # Python 3
-    from urllib2 import urlopen, HTTPError
+    from urllib.request import urlopen
+    from urllib.error import HTTPError
 
 import requests
 

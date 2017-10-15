@@ -1,3 +1,4 @@
+from builtins import object
 import json
 import os
 import socket
@@ -70,7 +71,7 @@ class NmapHook(object):
                 "TCP"
             )
         )
-        oports = json_data[self.ip]["tcp"].keys()
+        oports = list(json_data[self.ip]["tcp"].keys())
         oports.sort()
         for port in oports:
             port_status = json_data[self.ip]["tcp"][port]["state"]
